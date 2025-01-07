@@ -23,7 +23,7 @@
     () => isIncome.value ? 'i-material-symbols-call-made-rounded' : 'i-material-symbols-call-received-rounded'
   )
   const iconColor = computed(
-    () => isIncome.value ? 'text-green-600' : 'text-red-600'
+    () => isIncome.value ? 'text-green-500' : 'text-red-500'
   )
   
 </script>
