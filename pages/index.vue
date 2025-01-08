@@ -6,6 +6,7 @@
   const selectedView = ref(transactionViewOptions[0])
   const transactions = ref([])
   const isLoading = ref(false)
+  const isOpen = ref(false)
   
   const fetchTransactions = async () => {
     isLoading.value = true
@@ -49,6 +50,30 @@
       }, {}) // Start with an empty object
     })
 
+    const incomeType = computed(() => {
+      return transactions.value.filter((transaction) => transaction.type === 'Income')
+    })
+
+    const expenseType = computed(() => {
+      return transactions.value.filter((transaction) => transaction.type === 'Expense')
+    })
+
+    const totalIncome = computed(() => {
+      return incomeType.value.reduce((acc, income) => {
+        acc += income.amount
+
+        return acc
+      }, 0)
+    })
+
+    const totalExpense = computed(() => {
+      return expenseType.value.reduce((acc, expense) => {
+        acc += expense.amount
+
+        return acc
+      }, 0)
+    })
+
 </script>
 
 <template>
@@ -62,14 +87,27 @@
   </section>
 
   <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-16 mb-10">
-    <Trend color="green" title="Income" :amount="2000" :last-amount="1000" :loading="isLoading" />
-    <Trend color="red" title="Expense" :amount="500" :last-amount="600" :loading="isLoading" />
+    <Trend color="green" title="Income" :amount="totalIncome" :last-amount="1000" :loading="isLoading" />
+    <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="600" :loading="isLoading" />
     <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="isLoading" />
     <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="isLoading" />
   </section>
 
+  <section class="flex justify-between">
+    <div>
+      <h2 class="text-2xl font-extrabold">Transactions</h2>
+      <div class="text-gray-500 dark:text-gray-400">
+        You have {{ incomeType.length }} incomes and {{ expenseType.length }} expenses this period
+      </div>
+    </div>
+    <div>
+      <!-- <TransactionModal v-model="isOpen" @saved="refresh()" /> -->
+      <UButton icon="i-heroicons-plus-circle" color="white" variant="solid" label="Add" @click="isOpen = true" />
+      <TransactionModal v-model="isOpen"/>
+    </div>
+  </section>
+
   <section v-if="!isLoading">
-    <h2 class="text-xl font-extrabold">Transactions</h2> 
     <div v-for="(transactionOnDay, date) in transactionByDate" :key="date" class="mb-10">
       <DailyTransaction :transactions="transactionOnDay" :date="date"/>
       <TransactionTest
