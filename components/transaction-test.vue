@@ -2,7 +2,31 @@
   const props = defineProps({
     transaction : Object
   })
+  const supabase = useSupabaseClient()
+  const emit = defineEmits(['deleted'])
+  const { toastError, toastSuccess } = useAppToast()
   const { currency } = useCurrency(props.transaction.amount)
+  const isLoading = ref(false)
+
+  const deleteTransaction = async () => {
+    isLoading.value = true
+    try {
+      await supabase.from('Transactions')
+        .delete()
+        .eq('id', props.transaction.id)
+        toastSuccess({
+          title: 'Transaction deleted'
+        })
+      emit('deleted')
+    } catch (error) {
+      toastError({
+        title: 'Transaction was not deleted'
+      })
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   const items = [
     [
       {
@@ -13,11 +37,12 @@
       {
         label: 'Delete',
         icon: 'i-heroicons-trash-20-solid',
-        click: () => console.log('Delete')
+        click: deleteTransaction
       }
     ]
   ]
 
+  
   const isIncome = computed(() => props.transaction.type === 'Income')
   const icon = computed(
     () => isIncome.value ? 'i-material-symbols-call-made-rounded' : 'i-material-symbols-call-received-rounded'
@@ -45,7 +70,7 @@
         <div>{{ currency }}</div>
         <div>
           <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
-            <UButton color="white" variant="ghost" trailing-icon="i-heroicons-ellipsis-horizontal" />
+            <UButton color="white" variant="ghost" trailing-icon="i-heroicons-ellipsis-horizontal" :loading="isLoading" />
           </UDropdown>
         </div>
       </div>
