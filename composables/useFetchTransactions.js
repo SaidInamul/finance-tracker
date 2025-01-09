@@ -1,4 +1,4 @@
-export const useFetchTransactions = () => {
+export const useFetchTransactions = (period) => {
     const supabase = useSupabaseClient()
     const transactions = ref([])
     const pending = ref(false)
@@ -7,8 +7,12 @@ export const useFetchTransactions = () => {
     const getTransactions = async () => {
         pending.value = true
         try {
-          const { data } = await useAsyncData('transactions', async () => {
-            const { data, error } = await supabase.from('Transactions').select().order('created_at', {ascending: false})
+          const { data } = await useAsyncData(`transactions-${period.value.from.toDateString()}-${period.value.to.toDateString()}`, async () => {
+            const { data, error } = await supabase.from('Transactions')
+            .select()
+            .gte('created_at', period.value.from.toISOString())
+            .lte('created_at', period.value.to.toISOString())
+            .order('created_at', {ascending: false})
             
             if (error) {
               return []
@@ -25,6 +29,7 @@ export const useFetchTransactions = () => {
 
     // refresh transactions
     const refresh = async () => transactions.value = await getTransactions()
+    watch(period, async () => await refresh(), { immediate : true })
 
     // use reduce() to group the transaction based on date
     const transactionByDate = computed(() => {

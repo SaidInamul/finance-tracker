@@ -3,7 +3,7 @@
   import Trend from '~/components/trend.vue';
 
   const selectedView = ref(transactionViewOptions[0])
-  const dates = useSelectedTimePeriod(selectedView.value)
+  const { current, previous } = useSelectedTimePeriod(selectedView)
   const isOpen = ref(false)
   const {
     byDate,
@@ -13,10 +13,12 @@
     totalExpense,
     pending,
     refresh
-  } = useFetchTransactions()
+  } = useFetchTransactions(current)
 
-  // refresh transactions ref
-  await refresh()
+  const {
+    totalIncome : prevTotalIncome,
+    totalExpense : prevTotalExpense
+  } = useFetchTransactions(previous)
 
 </script>
 
@@ -31,8 +33,8 @@
   </section>
 
   <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-16 mb-10">
-    <Trend color="green" title="Income" :amount="totalIncome" :last-amount="1000" :loading="pending" />
-    <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="600" :loading="pending" />
+    <Trend color="green" title="Income" :amount="totalIncome" :last-amount="prevTotalIncome" :loading="pending" />
+    <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="prevTotalExpense" :loading="pending" />
     <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="pending" />
     <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="pending" />
   </section>
