@@ -1,10 +1,16 @@
 <script setup>
     import { z } from 'zod'
     import { categories, types } from '~/constants';
+
     const props = defineProps({
         visible : Boolean
     })
-    const emit = defineEmits(['update:visible'])
+    const emit = defineEmits(['update:visible', 'saved'])
+    const form = ref()
+    const isLoading = ref(false)
+    const { toastError, toastSuccess } = useAppToast()
+    const supabase = useSupabaseClient()
+
     const initialState = {
         amount: 0,
         created_at: undefined,
@@ -24,7 +30,6 @@
         type : z.string(),
         category : z.string().optional()
     })
-    const form = ref()
 
     const resetForm = () => {
         Object.assign(state, initialState)
@@ -41,12 +46,32 @@
     })
 
     const submit = async () => {
-        if (form.value.errors.length) {
-            return
-        }
+        isLoading.value = true
+        try {
+            const { error } = await supabase.from('Transactions')
+            .upsert({ ...state })
 
-        // Store the form data into a supabase
-        console.log(form.value)
+            if (!error) {
+                toastSuccess({
+                    'title': 'Transaction added'
+                })
+                isOpen.value = false
+                emit('saved')
+                return
+            }
+            throw error
+
+        } catch (e) {
+            toastError({
+                title: 'Transaction not added',
+                description: e.message,
+            })
+
+        } finally {
+            isLoading.value = false
+
+        }
+        
     }
 
     
@@ -58,7 +83,14 @@
             <template #header>
                 <h1 class="font-medium text-lg">Add New Transaction</h1>
             </template>
-            <UForm :state="state" :schema="schema" ref="form" @submit.prevent="submit" class="space-y-6">
+            <UForm 
+                :state="state"
+                :schema="schema"
+                ref="form"
+                @submit.prevent="submit"
+                class="space-y-6"
+                :validateOn="['change', 'input', 'submit']"
+            >
                 
                 <div class="flex space-x-6">
                     <UFormGroup label="Amount" :required="true" name="amount" class="basis-1/2">
@@ -101,7 +133,7 @@
                     />
                 </UFormGroup>
 
-                <UButton type="submit" label="Save" block />
+                <UButton type="submit" label="Save" block :loading="isLoading" />
             </UForm>
         </UCard>
     </UModal>
