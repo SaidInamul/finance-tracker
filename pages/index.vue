@@ -103,7 +103,7 @@
     <div>
       <!-- <TransactionModal v-model="isOpen" @saved="refresh()" /> -->
       <UButton icon="i-heroicons-plus-circle" color="white" variant="solid" label="Add" @click="isOpen = true" />
-      <TransactionModal v-model="isOpen"/>
+      <TransactionModal v-model:visible="isOpen"/>
     </div>
   </section>
 

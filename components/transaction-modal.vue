@@ -1,22 +1,53 @@
 <script setup>
-    // import { z } from 'zod'
+    import { z } from 'zod'
     import { categories, types } from '~/constants';
     const props = defineProps({
-        modelValue : Boolean
+        visible : Boolean
     })
-    const emit = defineEmits(['update:modelValue'])
-    const state = reactive({
-        amount: undefined,
-        created_at: '',
-        type: '',
+    const emit = defineEmits(['update:visible'])
+    const initialState = {
+        amount: 0,
+        created_at: undefined,
+        type: undefined,
         category: '',
         description: '',
+    }
+    // default value when component is created
+    const state = reactive({
+        ...initialState
+    })
+    // set validation
+    const schema = z.object({
+        created_at : z.string(),
+        amount : z.number().positive('Must be more than 0'),
+        description : z.string().optional(),
+        type : z.string(),
+        category : z.string().optional()
+    })
+    const form = ref()
+
+    const resetForm = () => {
+        Object.assign(state, initialState)
+        form.value.clear()
+    }
+    const isOpen = computed({
+        get: () => props.visible,
+        set: (value) => {
+            if (!value) {
+                resetForm()
+            }
+            emit('update:visible', value)
+        }
     })
 
-    const isOpen = computed({
-        get: () => props.modelValue,
-        set: (value) => emit('update:modelValue', value)
-    })
+    const submit = async () => {
+        if (form.value.errors.length) {
+            return
+        }
+
+        // Store the form data into a supabase
+        console.log(form.value)
+    }
 
     
 </script>
@@ -27,7 +58,7 @@
             <template #header>
                 <h1 class="font-medium text-lg">Add New Transaction</h1>
             </template>
-            <UForm :state="state" @submit="save" class="space-y-6">
+            <UForm :state="state" :schema="schema" ref="form" @submit.prevent="submit" class="space-y-6">
                 
                 <div class="flex space-x-6">
                     <UFormGroup label="Amount" :required="true" name="amount" class="basis-1/2">
