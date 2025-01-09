@@ -5,7 +5,7 @@
   // const supabase = useSupabaseClient()
   const selectedView = ref(transactionViewOptions[0])
   const isOpen = ref(false)
-  const { refreshTransactions,
+  const {
     byDate,
     income,
     totalIncome,
@@ -13,7 +13,7 @@
     totalExpense,
     pending,
     refresh
-  } = useTransaction()
+  } = useFetchTransactions()
 
   // refresh transactions ref
   await refresh()

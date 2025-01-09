@@ -87,7 +87,7 @@
                 :state="state"
                 :schema="schema"
                 ref="form"
-                @submit.prevent="submit"
+                @submit.prevent="submit()"
                 class="space-y-6"
                 :validateOn="['change', 'input', 'submit']"
             >

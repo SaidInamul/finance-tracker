@@ -1,4 +1,4 @@
-export const useTransaction = () => {
+export const useFetchTransactions = () => {
     const supabase = useSupabaseClient()
     const transactions = ref([])
     const pending = ref(false)

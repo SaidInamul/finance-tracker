@@ -6,7 +6,6 @@
         color : String,
         loading : Boolean,
     })
-    const amount = toRef(props)
     const { currency } = useCurrency(props.amount)
 
     const trendingUp = computed(
