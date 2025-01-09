@@ -2,8 +2,8 @@
   import { transactionViewOptions } from '~/constants';
   import Trend from '~/components/trend.vue';
 
-  // const supabase = useSupabaseClient()
   const selectedView = ref(transactionViewOptions[0])
+  const dates = useSelectedTimePeriod(selectedView.value)
   const isOpen = ref(false)
   const {
     byDate,
