@@ -31,12 +31,12 @@
     [
       {
         label: 'Edit',
-        icon: 'i-heroicons-pencil-square-20-solid',
+        icon: 'i-material-symbols-edit-outline-rounded',
         click: () => console.log('Edit')
       },
       {
         label: 'Delete',
-        icon: 'i-heroicons-trash-20-solid',
+        icon: 'i-material-symbols-delete-forever-outline-rounded',
         click: deleteTransaction
       }
     ]

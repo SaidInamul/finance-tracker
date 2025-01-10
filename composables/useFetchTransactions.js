@@ -29,7 +29,7 @@ export const useFetchTransactions = (period) => {
 
     // refresh transactions
     const refresh = async () => transactions.value = await getTransactions()
-    watch(period, async () => await refresh(), { immediate : true })
+    watch(period, async () => await refresh())
 
     // use reduce() to group the transaction based on date
     const transactionByDate = computed(() => {

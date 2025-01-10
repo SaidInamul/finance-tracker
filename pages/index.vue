@@ -13,13 +13,16 @@
     totalExpense,
     pending,
     refresh
-  } = useFetchTransactions(current)
+  } = useFetchTransactions(current)  //pass the current date
+
+  await refresh() // explicitly call the refresh for current date
 
   const {
     totalIncome : prevTotalIncome,
-    totalExpense : prevTotalExpense
-  } = useFetchTransactions(previous)
-
+    totalExpense : prevTotalExpense,
+    refresh : refreshPrevious
+  } = useFetchTransactions(previous) //pass the previous date
+  await refreshPrevious () // explicitly call the refresh for previous date
 </script>
 
 <template>

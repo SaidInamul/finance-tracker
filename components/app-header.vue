@@ -1,39 +1,24 @@
 <script setup lang="ts">
 const items = [
   [{
-    label: 'Profile',
+    label: 'Name user',
     avatar: {
       src: 'https://avatars.githubusercontent.com/u/739984?v=4'
     }
   }], [{
-    label: 'Edit',
-    icon: 'i-heroicons-pencil-square-20-solid',
-    shortcuts: ['E'],
-    click: () => {
-      console.log('Edit')
-    }
-  }, {
-    label: 'Duplicate',
-    icon: 'i-heroicons-document-duplicate-20-solid',
-    shortcuts: ['D'],
-    disabled: true
+    label: 'Setting',
+    icon: 'i-material-symbols-admin-panel-settings-outline-rounded',
   }], [{
-    label: 'Archive',
-    icon: 'i-heroicons-archive-box-20-solid'
-  }, {
-    label: 'Move',
-    icon: 'i-heroicons-arrow-right-circle-20-solid'
-  }], [{
-    label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
-    shortcuts: ['⌘', 'D']
+    label: 'Sign out',
+    icon: 'i-material-symbols-power-settings-new-outline-rounded',
   }]
 ]
 </script>
 
 <template>
     <header class="flex justify-between items-center mt-10">
-        <NuxtLink to="/" class="text-2xl font-bold">
+        <NuxtLink to="/" class="text-2xl font-bold flex items-center gap-2">
+            <img src="/monster.png" alt="monster logo" class="w-8 h-8">
             Finance Tracker
         </NuxtLink>
         <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">

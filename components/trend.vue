@@ -6,7 +6,8 @@
         color : String,
         loading : Boolean,
     })
-    const { currency } = useCurrency(props.amount)
+    const { amount } = toRefs(props)
+    const { currency } = useCurrency(amount)
 
     const trendingUp = computed(
         () => props.amount >= props.lastAmount
