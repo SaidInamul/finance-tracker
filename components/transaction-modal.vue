@@ -48,7 +48,7 @@
     const submit = async () => {
         isLoading.value = true
         try {
-            const { error } = await supabase.from('Transactions')
+            const { error } = await supabase.from('transactions')
             .upsert({ ...state })
 
             if (!error) {

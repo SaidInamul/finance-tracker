@@ -11,7 +11,7 @@
   const deleteTransaction = async () => {
     isLoading.value = true
     try {
-      await supabase.from('Transactions')
+      await supabase.from('transactions')
         .delete()
         .eq('id', props.transaction.id)
         toastSuccess({

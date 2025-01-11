@@ -5,6 +5,12 @@
             <div class="flex flex-col space-y-6 mx-auto pt-10 max-w-lg">
                 <img src="/monster.png" alt="monster logo" class="w-16 h-16 self-center">
                 <h1 class="text-3xl text-center">{{ route.meta.title }}</h1>
+                <h1 class="text-gray-400 text-center">{{ route.meta.description }}
+                  <NuxtLink class="text-primary hover:text-green-600 transition-color duration-200"
+                  :to="`/${route.meta.link}`">
+                    {{ route.meta.name }}
+                  </NuxtLink>
+                </h1>
                 <slot />
             </div>
         </main>

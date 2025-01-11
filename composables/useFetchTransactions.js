@@ -8,7 +8,7 @@ export const useFetchTransactions = (period) => {
         pending.value = true
         try {
           const { data } = await useAsyncData(`transactions-${period.value.from.toDateString()}-${period.value.to.toDateString()}`, async () => {
-            const { data, error } = await supabase.from('Transactions')
+            const { data, error } = await supabase.from('transactions')
             .select()
             .gte('created_at', period.value.from.toISOString())
             .lte('created_at', period.value.to.toISOString())
