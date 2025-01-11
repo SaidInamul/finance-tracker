@@ -5,7 +5,7 @@
         layout: 'authform',
         title: 'Welcome back!',
         description:  'Dont have an account?',
-        name: 'Register here',
+        name: 'Register now',
         link: 'register'
     })
 
