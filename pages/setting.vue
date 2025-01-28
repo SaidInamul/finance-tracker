@@ -1,4 +1,5 @@
 <script setup>
+
 const links = [{
   label: 'Unit Currency',
   icon: 'i-material-symbols-currency-exchange-rounded',
@@ -16,9 +17,15 @@ const links = [{
   icon: 'i-material-symbols-settings-account-box-rounded',
   to: '/setting/account'
 }]
+
+const { getProfile } = useFetchProfile()
+const userProfile = await getProfile()
+
+
 </script>
 
 <template>
+  {{ userProfile }}
   <div class="flex gap-6">
     <UVerticalNavigation :links="links" class="w-48" />
     <div class="flex-1">

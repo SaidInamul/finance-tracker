@@ -3,17 +3,19 @@ export const useFetchProfile = () => {
     const user = useSupabaseUser()
 
     const getProfile = async () => {
-        const { data } = await useAsyncData('userProfile', async () => {
-            const { data, error } = await supabase.from('user_profiles').select()
-            
-            if (error) {
-                console.log(error)
-                return []
-            }
-            console.log(data)
-            return data
-        })
-        return data.value
+
+        const { data, error } = await supabase
+            .from('user_profiles')
+            .select('name, avatar, time_period, unit_currency')
+            .eq('user_id', user.value.id)
+            .single()
+
+        if (error) {
+            console.log('Error fetching profile:', error)
+            return null
+        }
+
+        return data 
     }
 
     return {
