@@ -9,7 +9,7 @@
         link: 'register'
     })
 
-    useRedirectIfAuthenticated()
+    // useRedirectIfAuthenticated()
 
     const isLoading = ref(false)
     const form = ref()

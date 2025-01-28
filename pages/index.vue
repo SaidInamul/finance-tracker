@@ -23,6 +23,7 @@
     refresh : refreshPrevious
   } = useFetchTransactions(previous) //pass the previous date
   await refreshPrevious () // explicitly call the refresh for previous date
+
 </script>
 
 <template>

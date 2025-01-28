@@ -6,9 +6,13 @@ const items = [
     slot: 'account',
     disabled: true
   }], [{
+    label: 'Home',
+    icon: 'i-material-symbols-home-rounded',
+    click: () => navigateTo('/')
+  },{
     label: 'Settings',
     icon: 'i-material-symbols-admin-panel-settings-outline-rounded',
-    // click: () => navigateTo('/settings/profile')
+    click: () => navigateTo('/setting/profile')
   }, {
     label: 'Sign out',
     icon: 'i-material-symbols-power-settings-new-outline-rounded',

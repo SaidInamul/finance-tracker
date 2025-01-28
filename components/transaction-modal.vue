@@ -108,7 +108,6 @@
                             class="w-full"
                             placeholder="Select type"
                             :options="types"
-                            model-value=""
                             v-model="state.type"
                         />
                     </UFormGroup>
@@ -118,7 +117,6 @@
                             class="w-full"
                             placeholder="Select a category"
                             :options="categories"
-                            model-value=""
                             v-model="state.category"
                         />
                     </UFormGroup>
