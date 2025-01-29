@@ -2,6 +2,10 @@
     import { z } from 'zod'
     import { unit } from '~/constants';
 
+    useHead({
+        title: 'Setting | Unit Currency'
+    });
+
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
     const currentUnit = ref(unit[0])

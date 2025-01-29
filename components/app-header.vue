@@ -1,27 +1,45 @@
 <script setup>
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
-const items = [
-  [{
-    slot: 'account',
-    disabled: true
-  }], [{
-    label: 'Home',
-    icon: 'i-material-symbols-home-rounded',
-    click: () => navigateTo('/')
-  },{
-    label: 'Settings',
-    icon: 'i-material-symbols-admin-panel-settings-outline-rounded',
-    click: () => navigateTo('/setting/profile')
-  }, {
-    label: 'Sign out',
-    icon: 'i-material-symbols-power-settings-new-outline-rounded',
-    click: async () => {
-      await supabase.auth.signOut()
-      return navigateTo('/login')
-    }
-  }]
-]
+  const supabase = useSupabaseClient()
+  const user = useSupabaseUser()
+  const userProfile = ref({})
+  const avatar = ref(null)
+
+if (user.value) {
+
+  const { getProfile } = useFetchProfile()
+  userProfile.value = await getProfile()
+
+  avatar.value = computed(() => {
+    if (!userProfile.value?.avatar) return null
+        return supabase
+        .storage.from('avatars')
+        .getPublicUrl(userProfile.value?.avatar)
+        .data
+        .publicUrl
+    })
+}
+
+  const items = [
+    [{
+      slot: 'account',
+      disabled: true
+    }], [{
+      label: 'Home',
+      icon: 'i-material-symbols-home-rounded',
+      click: () => navigateTo('/')
+    },{
+      label: 'Settings',
+      icon: 'i-material-symbols-admin-panel-settings-outline-rounded',
+      click: () => navigateTo('/setting/profile')
+    }, {
+      label: 'Sign out',
+      icon: 'i-material-symbols-power-settings-new-outline-rounded',
+      click: async () => {
+        await supabase.auth.signOut()
+        return navigateTo('/login')
+      }
+    }]
+  ]
 
 </script>
 
@@ -31,8 +49,13 @@ const items = [
             <img src="/monster.png" alt="monster logo" class="w-8 h-8">
             Finance Tracker
         </NuxtLink>
-        <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }" v-if="user">
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+        <UDropdown 
+          :items="items"
+          :ui="{ item: { disabled: 'cursor-text select-text' } }"
+          :popper="{ placement: 'bottom-start' }"
+          v-if="user">
+          <UAvatar :src="avatar?.value" v-if="avatar?.value" />
+          <UAvatar :alt="user.email" v-else/>
 
           <template #account="{ item }">
             <div class="text-left">

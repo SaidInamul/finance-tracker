@@ -2,6 +2,10 @@
   import { transactionViewOptions } from '~/constants';
   import Trend from '~/components/trend.vue';
 
+  useHead({
+        title: 'Home'
+    });
+
   const selectedView = ref(transactionViewOptions[0])
   const { current, previous } = useSelectedTimePeriod(selectedView)
   const isOpen = ref(false)

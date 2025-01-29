@@ -9,7 +9,9 @@
         link: 'register'
     })
 
-    // useRedirectIfAuthenticated()
+    useHead({
+        title: 'Login'
+    })
 
     const isLoading = ref(false)
     const form = ref()
