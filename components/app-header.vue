@@ -49,31 +49,35 @@ if (user.value) {
             <img src="/monster.png" alt="monster logo" class="w-8 h-8">
             Finance Tracker
         </NuxtLink>
-        <UDropdown 
-          :items="items"
-          :ui="{ item: { disabled: 'cursor-text select-text' } }"
-          :popper="{ placement: 'bottom-start' }"
-          v-if="user">
-          <UAvatar :src="avatar?.value" v-if="avatar?.value" />
-          <UAvatar :alt="user.email" v-else/>
+        <div class="flex space-x-5 items-center" v-if="user">
+          <p class="text-gray-400 text-sm">Welcome, {{ userProfile?.name ? userProfile?.name : '' }}</p>
+          <UDropdown 
+            :items="items"
+            :ui="{ item: { disabled: 'cursor-text select-text' } }"
+            :popper="{ placement: 'bottom-start' }"
+            >
+            <UAvatar :src="avatar?.value" v-if="avatar?.value" />
+            <UAvatar :alt="user.email" v-else/>
 
-          <template #account="{ item }">
-            <div class="text-left">
-              <p>
-                Signed in as
-              </p>
-              <p class="truncate font-medium text-gray-900 dark:text-white">
-                {{ user.email }}
-              </p>
-            </div>
-          </template>
+            <template #account="{ item }">
+              <div class="text-left">
+                <p>
+                  Signed in as
+                </p>
+                <p class="truncate font-medium text-gray-900 dark:text-white">
+                  {{ user.email }}
+                </p>
+              </div>
+            </template>
 
-          <template #item="{ item }">
-            <span class="truncate">{{ item.label }}</span>
+            <template #item="{ item }">
+              <span class="truncate">{{ item.label }}</span>
 
-            <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
-          </template>
-        </UDropdown>
+              <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
+            </template>
+          </UDropdown>
+        </div>
+        
     </header>
 </template>
 
