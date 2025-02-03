@@ -47,13 +47,13 @@
             const { data, error } = await supabase.auth.signUp({
                 email: state.email,
                 password: state.password,
-            }, {
-                redirectTo : 'http://localhost:3000/'
             })
 
             if (error) {
                 throw error
             }
+
+            return navigateTo('/')
 
         } catch (error) {
             toastError({
