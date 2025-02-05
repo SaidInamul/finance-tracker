@@ -1,11 +1,13 @@
 
-export const useCurrency = (amount) => {
-    const currency = computed(() => {
-      return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'MYR'
-      }).format(isRef(amount) ? amount.value : amount)
-    })
+export const useCurrency = (amount, unit) => {
+
+  const currency = computed(() => {
+    const currencyUnit = isRef(unit) ? unit.value : unit
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: currencyUnit ? currencyUnit : 'MYR'
+    }).format(isRef(amount) ? amount.value : amount)
+  })
   
     return {
       currency

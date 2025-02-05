@@ -1,11 +1,12 @@
 <script setup>
   const props = defineProps({
-    transaction : Object
+    transaction : Object,
+    unit : String
   })
   const supabase = useSupabaseClient()
   const emit = defineEmits(['deleted'])
   const { toastError, toastSuccess } = useAppToast()
-  const { currency } = useCurrency(props.transaction.amount)
+  const { currency } = useCurrency(props.transaction.amount, props.unit)
   const isLoading = ref(false)
 
   const deleteTransaction = async () => {

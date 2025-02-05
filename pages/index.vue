@@ -5,8 +5,11 @@
   useHead({
         title: 'Home'
     });
+  
+  const { getProfile } = useFetchProfile()
+  const userProfile = await getProfile()
 
-  const selectedView = ref(transactionViewOptions[0])
+  const selectedView = ref(userProfile.time_period)
   const { current, previous } = useSelectedTimePeriod(selectedView)
   const isOpen = ref(false)
   const {
@@ -41,10 +44,10 @@
   </section>
 
   <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-16 mb-10">
-    <Trend color="green" title="Income" :amount="totalIncome" :last-amount="prevTotalIncome" :loading="pending" />
-    <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="prevTotalExpense" :loading="pending" />
-    <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="pending" />
-    <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="pending" />
+    <Trend color="green" title="Income" :amount="totalIncome" :last-amount="prevTotalIncome" :loading="pending" :unit="userProfile.unit_currency" />
+    <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="prevTotalExpense" :loading="pending" :unit="userProfile.unit_currency" />
+    <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="pending" :unit="userProfile.unit_currency" />
+    <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="pending" :unit="userProfile.unit_currency" />
   </section>
 
   <section class="flex justify-between">
@@ -63,11 +66,12 @@
 
   <section v-if="!pending">
     <div v-for="(transactionOnDay, date) in byDate" :key="date" class="mb-10">
-      <DailyTransaction :transactions="transactionOnDay" :date="date"/>
+      <DailyTransaction :transactions="transactionOnDay" :date="date" :unit="userProfile.unit_currency"/>
       <TransactionTest
         v-for="transaction in transactionOnDay"
         :key="transaction.id"
         :transaction="transaction"
+        :unit="userProfile.unit_currency"
         @deleted="refresh()"/>
     </div>
   </section>

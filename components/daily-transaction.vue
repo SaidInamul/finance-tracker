@@ -1,7 +1,8 @@
 <script setup>
   const props = defineProps({
     date : String,
-    transactions : Array
+    transactions : Array,
+    unit: String
   })
 
   const total = computed( () => {
@@ -16,7 +17,7 @@
     }, 0)
   })
 
-  const { currency } = useCurrency(total)
+  const { currency } = useCurrency(total, props.unit)
   
 </script>
 

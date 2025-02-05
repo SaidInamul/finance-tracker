@@ -28,9 +28,12 @@
         name: userProfile?.name
     })
 
-    const nameSchema = z.string()
-        .max(30, 'Name must be at most 30 characters')
-        .regex(/^[A-Za-z\s]+$/, "Name must only contain alphabets and spaces")
+    const nameSchema = z.string({
+            invalid_type_error: "You can enter your name here"
+        })
+        .max(30, { message: "Name must be at most 30 characters" })
+        .regex(/^[A-Za-z\s]+$/, { message: "Name must only contain alphabets and spaces" })
+
 
     const validateName = () => {
         const result = nameSchema.safeParse(state.value.name)
@@ -150,7 +153,7 @@
             if (deletePreviousError) throw deletePreviousError
 
             toastSuccess({
-                title : 'Profile Updated',
+                title : 'Profile updated',
                 description : 'Reload the page to see the changes'
             })
         } catch {

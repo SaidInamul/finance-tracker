@@ -5,9 +5,10 @@
         lastAmount : Number,
         color : String,
         loading : Boolean,
+        unit : String
     })
-    const { amount } = toRefs(props)
-    const { currency } = useCurrency(amount)
+    const { amount, unit } = toRefs(props)
+    const { currency } = useCurrency(amount, unit)
 
     const trendingUp = computed(
         () => props.amount >= props.lastAmount
