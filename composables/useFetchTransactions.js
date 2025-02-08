@@ -36,7 +36,7 @@ export const useFetchTransactions = (period) => {
         return transactions.value.reduce((acc, transaction) => {
   
         // Extract the date in YYYY-MM-DD format
-        const dateKey = new Date(transaction.created_at).toISOString().split("T")[0]
+        const dateKey = transaction.created_at.split("T")[0]
   
         // Check if the dateKey already exists in the accumulator
         if (!acc[dateKey]) {

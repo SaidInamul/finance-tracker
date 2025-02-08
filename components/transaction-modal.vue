@@ -18,7 +18,13 @@
     const { toastError, toastSuccess } = useAppToast()
     const supabase = useSupabaseClient()
 
-    const initialState = {
+    const initialState = isEditing.value ? {
+        amount: props.transaction?.amount,
+        created_at: props.transaction?.created_at.split('T')[0],
+        type: props.transaction?.type,
+        category: props.transaction?.category,
+        description: props.transaction?.description, 
+    } : {
         amount: 0,
         created_at: undefined,
         type: undefined,
@@ -27,13 +33,7 @@
     }
 
     // default value when component is created
-    const state = reactive( isEditing.value ? {
-        amount: props.transaction?.amount,
-        created_at: props.transaction?.created_at.split('T')[0],
-        type: props.transaction?.type,
-        category: props.transaction?.category,
-        description: props.transaction?.description, 
-    } : {
+    const state = reactive( {
         ...initialState
     })
 
