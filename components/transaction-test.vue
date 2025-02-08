@@ -4,10 +4,13 @@
     unit : String
   })
   const supabase = useSupabaseClient()
-  const emit = defineEmits(['deleted'])
+
+  const emit = defineEmits(['deleted', 'edited'])
   const { toastError, toastSuccess } = useAppToast()
   const { currency } = useCurrency(props.transaction.amount, props.unit)
+
   const isLoading = ref(false)
+  const isOpen = ref(false)
 
   const deleteTransaction = async () => {
     isLoading.value = true
@@ -33,7 +36,7 @@
       {
         label: 'Edit',
         icon: 'i-material-symbols-edit-outline-rounded',
-        click: () => console.log('Edit')
+        click: () => isOpen.value = true
       },
       {
         label: 'Delete',
@@ -72,6 +75,7 @@
         <div>
           <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
             <UButton color="white" variant="ghost" trailing-icon="i-heroicons-ellipsis-horizontal" :loading="isLoading" />
+            <TransactionModal v-model:visible="isOpen" :transaction="transaction" @saved="emit('edited')" />
           </UDropdown>
         </div>
       </div>

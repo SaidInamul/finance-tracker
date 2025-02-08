@@ -3,8 +3,15 @@
     import { categories, types } from '~/constants';
 
     const props = defineProps({
-        visible : Boolean
+        visible : Boolean,
+        transaction : {
+            type : Object,
+            required : false
+        }
     })
+
+    // const isEditing = computed(() => !!props.transaction)
+    const isEditing = ref(true)
     const emit = defineEmits(['update:visible', 'saved'])
     const form = ref()
     const isLoading = ref(false)
@@ -18,10 +25,18 @@
         category: '',
         description: '',
     }
+
     // default value when component is created
-    const state = reactive({
+    const state = reactive( isEditing.value ? {
+        amount: props.transaction?.amount,
+        created_at: props.transaction?.created_at.split('T')[0],
+        type: props.transaction?.type,
+        category: props.transaction?.category,
+        description: props.transaction?.description, 
+    } : {
         ...initialState
     })
+
     // set validation
     const schema = z.object({
         created_at : z.string(),
@@ -49,11 +64,13 @@
         isLoading.value = true
         try {
             const { error } = await supabase.from('transactions')
-            .upsert({ ...state })
+            .upsert({ 
+                ...state,
+                id : props.transaction?.id })
 
             if (!error) {
                 toastSuccess({
-                    'title': 'Transaction added'
+                    'title': 'Transaction saved'
                 })
                 isOpen.value = false
                 emit('saved')
@@ -73,7 +90,6 @@
         }
         
     }
-
     
 </script>
 
@@ -81,7 +97,7 @@
     <UModal v-model="isOpen">
         <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
             <template #header>
-                <h1 class="font-medium text-lg">Add New Transaction</h1>
+                <h1 class="font-medium text-lg">{{ isEditing ? 'Edit ' : 'Add New ' }}Transaction</h1>
             </template>
             <UForm 
                 :state="state"

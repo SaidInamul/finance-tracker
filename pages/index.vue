@@ -72,7 +72,8 @@
         :key="transaction.id"
         :transaction="transaction"
         :unit="userProfile.unit_currency"
-        @deleted="refresh()"/>
+        @deleted="refresh()"
+        @edited="refresh()"/>
     </div>
   </section>
 
