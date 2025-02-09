@@ -15,9 +15,13 @@
   const {
     byDate,
     income,
-    totalIncome,
     expense,
+    invest,
+    saving,
+    totalIncome,
     totalExpense,
+    totalInvest,
+    totalSaving,
     pending,
     refresh
   } = useFetchTransactions(current)  //pass the current date
@@ -27,6 +31,8 @@
   const {
     totalIncome : prevTotalIncome,
     totalExpense : prevTotalExpense,
+    totalInvest : prevTotalInvest,
+    totalSaving : prevTotalSaving,
     refresh : refreshPrevious
   } = useFetchTransactions(previous) //pass the previous date
   await refreshPrevious () // explicitly call the refresh for previous date
@@ -46,15 +52,19 @@
   <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-16 mb-10">
     <Trend color="green" title="Income" :amount="totalIncome" :last-amount="prevTotalIncome" :loading="pending" :unit="userProfile.unit_currency" />
     <Trend color="red" title="Expense" :amount="totalExpense" :last-amount="prevTotalExpense" :loading="pending" :unit="userProfile.unit_currency" />
-    <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="pending" :unit="userProfile.unit_currency" />
-    <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="pending" :unit="userProfile.unit_currency" />
+    <Trend color="green" title="Investment" :amount="totalInvest" :last-amount="prevTotalInvest" :loading="pending" :unit="userProfile.unit_currency" />
+    <Trend color="red" title="Saving" :amount="totalSaving" :last-amount="prevTotalSaving" :loading="pending" :unit="userProfile.unit_currency" />
   </section>
 
   <section class="flex justify-between">
     <div>
       <h2 class="text-2xl font-extrabold">Transactions</h2>
       <div class="text-gray-500 dark:text-gray-400">
-        You have {{ income.length }} incomes and {{ expense.length }} expenses this period
+        You have {{ income.length }} incomes,
+        {{ expense.length }} expenses,
+        {{ invest.length }} investments,
+        {{ saving.length }} savings
+        this period
       </div>
     </div>
     <div>

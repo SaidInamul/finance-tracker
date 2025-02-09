@@ -46,13 +46,15 @@
     ]
   ]
 
-  
-  const isIncome = computed(() => props.transaction.type === 'Income')
+  const isExpense = computed(() => props.transaction.type === 'Expense')
+
   const icon = computed(
-    () => isIncome.value ? 'i-material-symbols-call-made-rounded' : 'i-material-symbols-call-received-rounded'
+    () => isExpense.value ? 'i-material-symbols-call-received-rounded'
+      : 'i-material-symbols-call-made-rounded'
   )
+  
   const iconColor = computed(
-    () => isIncome.value ? 'text-green-500' : 'text-red-500'
+    () => isExpense.value ? 'text-red-500' : 'text-green-500'
   )
   
 </script>

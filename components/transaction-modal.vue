@@ -10,11 +10,11 @@
         }
     })
 
-    // const isEditing = computed(() => !!props.transaction)
-    const isEditing = ref(true)
+    const isEditing = computed(() => !!props.transaction)
     const emit = defineEmits(['update:visible', 'saved'])
     const form = ref()
     const isLoading = ref(false)
+
     const { toastError, toastSuccess } = useAppToast()
     const supabase = useSupabaseClient()
 

@@ -58,6 +58,14 @@ export const useFetchTransactions = (period) => {
     const expenseType = computed(() => {
         return transactions.value.filter((transaction) => transaction.type === 'Expense')
     })
+
+    const investType = computed(() => {
+        return transactions.value.filter((transaction) => transaction.type === 'Investment')
+    })
+  
+    const savingType = computed(() => {
+        return transactions.value.filter((transaction) => transaction.type === 'Saving')
+    })
   
     const totalIncome = computed(() => {
         return incomeType.value.reduce((acc, income) => {
@@ -75,12 +83,32 @@ export const useFetchTransactions = (period) => {
         }, 0)
     })
 
+    const totalInvest = computed(() => {
+        return investType.value.reduce((acc, invest) => {
+          acc += invest.amount
+  
+          return acc
+        }, 0)
+    })
+  
+    const totalSaving = computed(() => {
+        return savingType.value.reduce((acc, saving) => {
+          acc += saving.amount
+  
+          return acc
+        }, 0)
+    })
+
     return {
         pending,
         income : incomeType,
         expense : expenseType,
+        invest : investType,
+        saving : savingType,
         totalIncome,
         totalExpense,
+        totalInvest,
+        totalSaving,
         refresh,
         byDate : transactionByDate
     }
